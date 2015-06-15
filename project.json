@@ -1,0 +1,15 @@
+{
+    "dependencies": {
+        "Kestrel": "1.0.0-beta4",
+        "Microsoft.AspNet.Owin": "1.0.0-beta4",
+        "Microsoft.Net.Http": "2.2.29",
+        "Nancy": "1.2.0",
+        "Newtonsoft.Json": "7.0.1-beta3"
+    },
+    "commands": {
+        "kestrel": "Microsoft.AspNet.Hosting --server Kestrel --server.urls http://localhost:5012"
+    },
+    "frameworks": {
+        "dnx451": {}
+    }
+}
