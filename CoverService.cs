@@ -9,7 +9,8 @@ namespace CoverService
 
     public class CoverService : ICoverService
     {
-        private const string defaultImageUrl = "http://www.pdclipart.org/albums/Computers/etiquette_cd-rom_01.png";
+        private static readonly string defaultImageUrl = Environment.GetEnvironmentVariable("DEFAULT_IMAGE_URL")
+                                                         ?? "http://www.pdclipart.org/albums/Computers/etiquette_cd-rom_01.png";
 
         private readonly Dictionary<string, string[]> cache = new Dictionary<string, string[]>();
 

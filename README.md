@@ -5,9 +5,9 @@ Microservice to retrieve CD cover image URLs
 ## Usage
 
 ```
-GET http://46.101.191.124:5012/{mbid} // mbid = MusicBrainz ID
+GET http://46.101.191.124:5012/images/{mbid} // mbid = MusicBrainz ID
 
-// Example Response:
+// Returns an array of image URLs, like:
 // ["http://domain.org/6158.jpg", "http://domain.org/1589.jpg"]
 ```
 
@@ -19,6 +19,7 @@ GET http://46.101.191.124:5012/{mbid} // mbid = MusicBrainz ID
 
 ```
 SERVICE_PORT=5012
+DEFAULT_IMAGE_URL=http://www.pdclipart.org/albums/Computers/etiquette_cd-rom_01.png
 ```
 
 ## Build container
@@ -56,6 +57,7 @@ http://46.101.191.124:8080/api/containers?pull=true \
   "environment": {
     "SERVICE_CHECK_SCRIPT": "curl -s http://46.101.191.124:5012/healthcheck",
     "SERVICE_PORT": "5012",
+    "DEFAULT_IMAGE_URL": "http://www.pdclipart.org/albums/Computers/etiquette_cd-rom_01.png"
   },
   "hostname": "",
   "domain": "",
@@ -98,7 +100,7 @@ $Body = @"
   "environment": {
     "SERVICE_CHECK_SCRIPT": "curl -s http://46.101.191.124:5012/healthcheck",
     "SERVICE_PORT": "5012",
-    "DISCOVERY_SERVICE_URL": "http://46.101.191.124:8500"
+    "DEFAULT_IMAGE_URL": "http://www.pdclipart.org/albums/Computers/etiquette_cd-rom_01.png"
   },
   "hostname": "",
   "domain": "",
