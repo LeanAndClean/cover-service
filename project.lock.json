@@ -7,7 +7,8 @@
       "Microsoft.AspNet.Owin >= 1.0.0-beta4",
       "Microsoft.Net.Http >= 2.2.29",
       "Nancy >= 1.2.0",
-      "Newtonsoft.Json >= 7.0.1-beta3"
+      "Newtonsoft.Json >= 7.0.1-beta3",
+      "ReCache >= 1.0.0.27951"
     ],
     "DNX,Version=v4.5.1": []
   },
@@ -1062,6 +1063,28 @@
         "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll",
         "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.xml",
         "tools/install.ps1"
+      ]
+    },
+    "ReCache/1.0.0.27951": {
+      "serviceable": false,
+      "sha": "I/KBUuT7ui1SlA3ZAx1DeHKe+YcLfm3ZFDU8yDGfiQd1M8vuPza9pfAmoa2l0GpGW4fczYDZu/kJNjTaqiKd1Q==",
+      "frameworks": {
+        "DNX,Version=v4.5.1": {
+          "dependencies": {},
+          "frameworkAssemblies": [],
+          "runtimeAssemblies": [
+            "lib/net451/ReCache.dll"
+          ],
+          "compileAssemblies": [
+            "lib/net451/ReCache.dll"
+          ]
+        }
+      },
+      "files": [
+        "ReCache.1.0.0.27951.nupkg",
+        "ReCache.1.0.0.27951.nupkg.sha512",
+        "ReCache.nuspec",
+        "lib/net451/ReCache.dll"
       ]
     }
   }

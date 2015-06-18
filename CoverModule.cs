@@ -6,7 +6,7 @@ namespace CoverService
     {
         public CoverModule(ICoverService coverService)
         {
-            Get["/images/{mbid}", true] = async (x, ct) => await coverService.GetCoverUrlsAsync(x.mbid);
+            Get["/images/{mbid}"] = x => coverService.GetCoverUrlsAsync(x.mbid);
         }
     }
 }
