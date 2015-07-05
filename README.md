@@ -2,24 +2,19 @@
 
 Microservice to retrieve CD cover image URLs
 
-## Usage
+## Service configuration
 
 ```
-GET http://46.101.191.124:5012/images/{mbid} // mbid = MusicBrainz ID
-
-// Returns an array of image URLs, like:
-// ["http://domain.org/6158.jpg", "http://domain.org/1589.jpg"]
+export SERVICE_PORT=5012
+export DEFAULT_IMAGE_URL=http://www.pdclipart.org/albums/Computers/etiquette_cd-rom_01.png
 ```
 
-## Health Check
-
-* [Cover Service - Health Check](http://46.101.191.124:5012/healthcheck)
-
-## Configuration Parameters
+##Deploy configuration
 
 ```
-SERVICE_PORT=5012
-DEFAULT_IMAGE_URL=http://www.pdclipart.org/albums/Computers/etiquette_cd-rom_01.png
+export SERVICE_VERSION=0.0.4
+export PUBLISH_SERVICE=<ip>:<port>
+export DEPLOY_SERVICE=<ip>:<port>
 ```
 
 ## Build container
@@ -31,33 +26,31 @@ docker build -t cover-service .
 ## Run container locally
 
 ```
-docker run -t -d -p 5012:5012 cover-service
+docker run -t -d -p $SERVICE_PORT:$SERVICE_PORT cover-service
 ```
 
 ## Push container into private registry
 
 ```
-docker tag cover-service:latest 46.101.191.124:5000/cover-service:0.0.4
-docker push 46.101.191.124:5000/cover-service:0.0.4
+docker tag cover-service:latest $PUBLISH_SERVICE/cover-service:$SERVICE_VERSION
+docker push $PUBLISH_SERVICE/cover-service:$SERVICE_VERSION
 ```
 
 ## Deploy container from Shipyard
-
-### OSX/Linux
 
 ```
 curl -X POST \
 -H 'Content-Type: application/json' \
 -H 'X-Service-Key: pdE4.JVg43HyxCEMWvsFvu6bdFV7LwA7YPii' \
-http://46.101.191.124:8080/api/containers?pull=true \
+http://$DEPLOY_SERVICE/api/containers?pull=true \
 -d '{  
-  "name": "46.101.191.124:5000/cover-service:0.0.4",
+  "name": "'$PUBLISH_SERVICE'/cover-service:'$SERVICE_VERSION'",
   "cpus": 0.1,
   "memory": 64,
   "environment": {
-    "SERVICE_CHECK_SCRIPT": "curl -s http://46.101.191.124:5012/healthcheck",
-    "SERVICE_PORT": "5012",
-    "DEFAULT_IMAGE_URL": "http://www.pdclipart.org/albums/Computers/etiquette_cd-rom_01.png"
+    "SERVICE_CHECK_SCRIPT": "curl -s http://$SERVICE_CONTAINER_IP:$SERVICE_CONTAINER_PORT/healthcheck",
+    "SERVICE_PORT": "'$SERVICE_PORT'",
+    "DEFAULT_IMAGE_URL": "'$DEFAULT_IMAGE_URL'"
   },
   "hostname": "",
   "domain": "",
@@ -69,8 +62,8 @@ http://46.101.191.124:8080/api/containers?pull=true \
     {  
        "proto": "tcp",
        "host_ip": null,
-       "port": 5012,
-       "container_port": 5012
+       "port": '$SERVICE_PORT',
+       "container_port": '$SERVICE_PORT'
     }
   ],
   "labels": [],
@@ -82,48 +75,11 @@ http://46.101.191.124:8080/api/containers?pull=true \
 }'
 ```
 
-### Windows
+## API
 
 ```
-$Uri = "http://46.101.191.124:8080/api/containers?pull=true"
+GET http://localhost:$SERVICE_PORT/images/{mbid} // mbid = MusicBrainz ID
 
-$Headers = @{
-  "X-Service-Key" = "pdE4.JVg43HyxCEMWvsFvu6bdFV7LwA7YPii"
-  "Content-Type" = "application/json"
-}
-
-$Body = @"
-{  
-  "name": "46.101.191.124:5000/cover-service:0.0.4",
-  "cpus": 0.1,
-  "memory": 64,
-  "environment": {
-    "SERVICE_CHECK_SCRIPT": "curl -s http://46.101.191.124:5012/healthcheck",
-    "SERVICE_PORT": "5012",
-    "DEFAULT_IMAGE_URL": "http://www.pdclipart.org/albums/Computers/etiquette_cd-rom_01.png"
-  },
-  "hostname": "",
-  "domain": "",
-  "type": "service",
-  "network_mode": "bridge",
-  "links": {},
-  "volumes": [],
-  "bind_ports": [  
-    {  
-       "proto": "tcp",
-       "host_ip": null,
-       "port": 5012,
-       "container_port": 5012
-    }
-  ],
-  "labels": [],
-  "publish": false,
-  "privileged": false,
-  "restart_policy": {  
-    "name": "no"
-  }
-}
-"@
-
-Invoke-RestMethod -Uri $Uri -Method Post -Headers $Headers -Body $Body
+// Returns an array of image URLs, like:
+// ["http://domain.org/6158.jpg", "http://domain.org/1589.jpg"]
 ```
